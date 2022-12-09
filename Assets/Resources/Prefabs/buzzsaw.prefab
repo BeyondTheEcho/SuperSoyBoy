@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3706767731988273370}
   - component: {fileID: 3706767731988273371}
   - component: {fileID: 3706767731988273380}
+  - component: {fileID: 606081186}
   m_Layer: 0
   m_Name: buzzsaw
   m_TagString: Untagged
@@ -123,3 +124,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.28
+--- !u!114 &606081186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3706767731988273381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bceca92255775bc4aa43bb696348f146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerDeathPrefab: {fileID: 1000012039980154, guid: 620631aa7841b0342972728496b2d20f,
+    type: 3}
+  deathClip: {fileID: 8300000, guid: 20d68b3df7b8bf047a3ed6c5e47ae6c5, type: 3}
+  hitSprite: {fileID: 21300000, guid: e34df7d72fac13944bc0e0fe2b92e9cd, type: 3}
