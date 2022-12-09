@@ -1,25 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
-public class CameraLerpToTransform : MonoBehaviour {
-    // 1
+public class CameraLerpToTransform : MonoBehaviour
+{
     public Transform camTarget;
     public float trackingSpeed;
+    public float cameraZDepth = -10f;
     public float minX;
     public float minY;
     public float maxX;
     public float maxY;
-    // 2
+
     void FixedUpdate()
     {
-        // 3
         if (camTarget != null)
         {
-            // 4
-            var newPos = Vector2.Lerp(transform.position,
-                camTarget.position,
-                Time.deltaTime * trackingSpeed);
+            var newPos = Vector2.Lerp(transform.position, camTarget.position, Time.deltaTime * trackingSpeed);
             var camPosition = new Vector3(newPos.x, newPos.y, -10f);
             var v3 = camPosition;
             var clampX = Mathf.Clamp(v3.x, minX, maxX);

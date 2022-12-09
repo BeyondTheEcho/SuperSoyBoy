@@ -1,6 +1,5 @@
+﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D), typeof(Animator))]
 public class SoyBoyController : MonoBehaviour
@@ -20,7 +19,6 @@ public class SoyBoyController : MonoBehaviour
     private float jumpDuration;
     public float airAccel = 3f;
     public float jump = 14f;
-
     public AudioClip runClip;
     public AudioClip jumpClip;
     public AudioClip slideClip;
@@ -31,16 +29,15 @@ public class SoyBoyController : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        audioSource = GetComponent<AudioSource>();
         width = GetComponent<Collider2D>().bounds.extents.x + 0.1f;
         height = GetComponent<Collider2D>().bounds.extents.y + 0.2f;
+        audioSource = GetComponent<AudioSource>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+    // Use this for initialization
+    void Start () {
+	
+	}
 
     void PlayAudioClip(AudioClip clip)
     {
@@ -49,21 +46,12 @@ public class SoyBoyController : MonoBehaviour
             if (!audioSource.isPlaying) audioSource.PlayOneShot(clip);
         }
     }
+
     public bool PlayerIsOnGround()
     {
-        // 1
-        bool groundCheck1 = Physics2D.Raycast(new Vector2(
-                transform.position.x, transform.position.y - height),
-            -Vector2.up, rayCastLengthCheck);
-        bool groundCheck2 = Physics2D.Raycast(new Vector2(
-                transform.position.x + (width - 0.2f),
-                transform.position.y - height), -Vector2.up,
-            rayCastLengthCheck);
-        bool groundCheck3 = Physics2D.Raycast(new Vector2(
-                transform.position.x - (width - 0.2f),
-                transform.position.y - height), -Vector2.up,
-            rayCastLengthCheck);
-        // 2
+        bool groundCheck1 = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - height), -Vector2.up, rayCastLengthCheck);
+        bool groundCheck2 = Physics2D.Raycast(new Vector2(transform.position.x + (width - 0.2f), transform.position.y - height), -Vector2.up, rayCastLengthCheck);
+        bool groundCheck3 = Physics2D.Raycast(new Vector2(transform.position.x - (width - 0.2f), transform.position.y - height), -Vector2.up, rayCastLengthCheck);
         if (groundCheck1 || groundCheck2 || groundCheck3)
         {
             return true;
@@ -76,14 +64,8 @@ public class SoyBoyController : MonoBehaviour
 
     public bool IsWallToLeftOrRight()
     {
-        // 1
-        bool wallOnleft = Physics2D.Raycast(new Vector2(
-                transform.position.x - width, transform.position.y),
-            -Vector2.right, rayCastLengthCheck);
-        bool wallOnRight = Physics2D.Raycast(new Vector2(
-            transform.position.x + width, transform.position.y),
-            Vector2.right, rayCastLengthCheck);
-        // 2
+        bool wallOnleft = Physics2D.Raycast(new Vector2(transform.position.x - width, transform.position.y), -Vector2.right, rayCastLengthCheck);
+        bool wallOnRight = Physics2D.Raycast(new Vector2(transform.position.x + width, transform.position.y), Vector2.right, rayCastLengthCheck);
         if (wallOnleft || wallOnRight)
         {
             return true;
@@ -108,12 +90,8 @@ public class SoyBoyController : MonoBehaviour
 
     public int GetWallDirection()
     {
-        bool isWallLeft = Physics2D.Raycast(new Vector2(
-                transform.position.x - width, transform.position.y),
-            -Vector2.right, rayCastLengthCheck);
-        bool isWallRight = Physics2D.Raycast(new Vector2(
-                transform.position.x + width, transform.position.y),
-            Vector2.right, rayCastLengthCheck);
+        bool isWallLeft = Physics2D.Raycast(new Vector2(transform.position.x - width, transform.position.y), -Vector2.right, rayCastLengthCheck);
+        bool isWallRight = Physics2D.Raycast(new Vector2(transform.position.x + width, transform.position.y), Vector2.right, rayCastLengthCheck);
         if (isWallLeft)
         {
             return -1;
@@ -128,15 +106,12 @@ public class SoyBoyController : MonoBehaviour
         }
     }
 
+    // Update is called once per frame
     void Update()
     {
-        // 1
         input.x = Input.GetAxis("Horizontal");
         input.y = Input.GetAxis("Jump");
-
         animator.SetFloat("Speed", Mathf.Abs(input.x));
-
-        // 2
         if (input.x > 0f)
         {
             sr.flipX = false;
@@ -177,7 +152,6 @@ public class SoyBoyController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 1
         var acceleration = 0f;
         if (PlayerIsOnGround())
         {
@@ -187,9 +161,7 @@ public class SoyBoyController : MonoBehaviour
         {
             acceleration = airAccel;
         }
-
         var xVelocity = 0f;
-        // 2
         if (PlayerIsOnGround() && input.x == 0)
         {
             xVelocity = 0f;
@@ -198,7 +170,6 @@ public class SoyBoyController : MonoBehaviour
         {
             xVelocity = rb.velocity.x;
         }
-
         var yVelocity = 0f;
         if (PlayerIsTouchingGroundOrWall() && input.y == 1)
         {
@@ -208,12 +179,10 @@ public class SoyBoyController : MonoBehaviour
         {
             yVelocity = rb.velocity.y;
         }
-
-        // 3
         rb.AddForce(new Vector2(((input.x * speed) - rb.velocity.x) * acceleration, 0));
-        // 4
         rb.velocity = new Vector2(xVelocity, yVelocity);
-        if (IsWallToLeftOrRight() && !PlayerIsOnGround() && input.y == 1)
+
+        if (IsWallToLeftOrRight() && !PlayerIsOnGround() && input.y == 1f)
         {
             rb.velocity = new Vector2(-GetWallDirection() * speed * 0.75f, rb.velocity.y);
             animator.SetBool("IsOnWall", false);
